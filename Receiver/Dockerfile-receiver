@@ -1,0 +1,15 @@
+# Use a light version of Python
+FROM python:3.8-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the DNS server script and the file receiving script into the container
+COPY dns_server.py /app/
+COPY receive_file_test.py /app/
+
+# Expose the UDP port that the DNS server will listen on
+EXPOSE 53/udp
+
+# Command to run the DNS server
+CMD ["python", "receive_file_test.py"]

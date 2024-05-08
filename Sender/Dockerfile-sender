@@ -1,0 +1,15 @@
+# Use Python 3.8 image
+FROM python:3.8-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy the client testing script and the file sending script into the container
+COPY send_test.py /app/
+COPY send_file_test.py /app/
+
+# Copy the payload directory with image.png into the container
+COPY payload/ /app/payload/
+
+# Command to run the test script
+CMD ["python", "send_file_test.py"]

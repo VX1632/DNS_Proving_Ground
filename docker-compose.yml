@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  dns_receiver:
+    build:
+      context: ./Receiver
+      dockerfile: Dockerfile-receiver
+    ports:
+      - "53:53/udp"
+    networks:
+      proving_ground_network:
+        ipv4_address: 172.16.223.86
+
+  dns_sender:
+    build:
+      context: ./Sender
+      dockerfile: Dockerfile-sender
+    depends_on:
+      - dns_receiver
+    networks:
+      proving_ground_network:
+        ipv4_address: 172.16.223.121
+
+networks:
+  proving_ground_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.16.0.0/16"
