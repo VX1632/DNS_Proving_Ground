@@ -4,11 +4,15 @@ FROM python:3.8-slim
 # Set working directory
 WORKDIR /app
 
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Copy the client testing script and the file sending script into the container
 COPY send_test.py /app/
 COPY send_file_test.py /app/
 
-# Copy the payload directory with image.png into the container
+# Copy the payload directory with image.jpg into the container
 COPY payload/ /app/payload/
 
 # Command to run the test script

