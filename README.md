@@ -16,6 +16,18 @@ To set up this project locally, follow these steps:
    Navigate to the project directory and run:
    docker-compose up --build
 
+## Directory Structure
+
+dns-file-transfer/
+├── app/
+│   ├── downloads/           # Directory to store reconstructed files
+│   ├── static/              # Directory for static files (if needed)
+│   ├── templates/           # Directory for HTML templates (if needed)
+│   └── __init__.py          # Initialize the Flask app
+├── run.py                   # Main script to run the DNS server and Flask app
+├── requirements.txt         # Required Python packages
+├── README.md                # This README file
+└── .gitignore               # Git ignore file
 
 ## Usage
 
