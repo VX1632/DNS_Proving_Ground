@@ -1,11 +1,13 @@
-version: '3.8'
 services:
   dns_receiver:
     build:
       context: ./Receiver
       dockerfile: Dockerfile-receiver
+    volumes:
+      - ./downloads:/app/downloads
     ports:
       - "53:53/udp"
+      - "80:80"
     networks:
       proving_ground_network:
         ipv4_address: 172.16.223.86
@@ -14,6 +16,8 @@ services:
     build:
       context: ./Sender
       dockerfile: Dockerfile-sender
+    volumes:
+      - ./payload:/app/payload
     depends_on:
       - dns_receiver
     networks:
