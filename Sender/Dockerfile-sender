@@ -12,7 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY send_test.py /app/
 COPY send_file_test.py /app/
 
-# Copy the payload directory with image.jpg into the container
+# Copy the payload directory with the test_image file into the container
 COPY payload/ /app/payload/
 
 # Command to run the test script
